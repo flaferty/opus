@@ -1,0 +1,46 @@
+# Block AI training bots
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: Google-Extended
+User-agent: CCBot
+User-agent: PerplexityBot
+User-agent: Anthropic-ai
+User-agent: ClaudeBot
+User-agent: FacebookBot
+User-agent: Amazonbot
+Disallow: /
+Content-Signal: ai-train=no, search=yes, ai-input=no
+Content-Usage: train-ai=n
+
+# Allow search engines
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: DuckDuckBot
+User-agent: Slurp
+Allow: /
+Allow: /login
+Allow: /start
+Allow: /forgot-password
+Allow: /reset-password
+Disallow: /dashboard
+Disallow: /admin/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /supabase/
+Content-Signal: ai-train=no, search=yes, ai-input=yes
+
+# Global fallback and security
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /start
+Allow: /forgot-password
+Allow: /reset-password
+Disallow: /dashboard
+Disallow: /admin/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /supabase/
+Content-Signal: ai-train=no, search=yes, ai-input=yes
+Content-Usage: train-ai=n
+
