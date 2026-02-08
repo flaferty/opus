@@ -68,6 +68,37 @@ export default function ApplicationsList({ viewMode, setViewMode }: { viewMode: 
     },
   });
 
+  const filteredAndSortedApplications = applications
+    .filter((app) => {
+      if (selectedCompany && app.company_name !== selectedCompany) return false;
+      if (selectedLocation && app.location !== selectedLocation) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return sortByDate === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+
+  const getStatusColor = (status: ApplicationStatus) => {
+    const colors: Record<ApplicationStatus, string> = {
+      WISHLIST: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100',
+      APPLIED: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
+      INTERVIEWING: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
+      OFFER: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
+      REJECTED: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
+    };
+    return colors[status];
+  };
+
+  const uniqueCompanies = Array.from(
+    new Set(applications.map((app) => app.company_name).filter((c): c is string => Boolean(c)))
+  ).sort();
+
+  const uniqueLocations = Array.from(
+    new Set(applications.map((app) => app.location).filter((l): l is string => Boolean(l)))
+  ).sort();
+
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
       setTableSortOrder(tableSortOrder === 'asc' ? 'desc' : 'asc');
@@ -100,37 +131,6 @@ export default function ApplicationsList({ viewMode, setViewMode }: { viewMode: 
     a.download = `applications-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
   };
-
-  const filteredAndSortedApplications = applications
-    .filter((app) => {
-      if (selectedCompany && app.company_name !== selectedCompany) return false;
-      if (selectedLocation && app.location !== selectedLocation) return false;
-      return true;
-    })
-    .sort((a, b) => {
-      const dateA = new Date(a.created_at).getTime();
-      const dateB = new Date(b.created_at).getTime();
-      return sortByDate === 'newest' ? dateB - dateA : dateA - dateB;
-    });
-
-  const getStatusColor = (status: ApplicationStatus) => {
-    const colors: Record<ApplicationStatus, string> = {
-      WISHLIST: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100',
-      APPLIED: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
-      INTERVIEWING: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
-      OFFER: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
-      REJECTED: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
-    };
-    return colors[status];
-  };
-
-  const uniqueCompanies = Array.from(
-    new Set(applications.map((app) => app.company_name).filter((c): c is string => Boolean(c)))
-  ).sort();
-
-  const uniqueLocations = Array.from(
-    new Set(applications.map((app) => app.location).filter((l): l is string => Boolean(l)))
-  ).sort();
 
   const SortHeader = ({ label, sortKey: key }: { label: string; sortKey: SortKey }) => (
     <button
