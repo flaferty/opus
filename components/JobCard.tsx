@@ -3,8 +3,11 @@
 import { Application, ApplicationStatus } from '@/types/database.types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { ExternalLink, X, MapPin, Calendar, AlertCircle } from 'lucide-react';
+import { ExternalLink, X, MapPin, Calendar, AlertCircle, Clock } from 'lucide-react';
 import { format } from 'date-fns';
+import { enGB } from 'date-fns/locale';
+import TagBadges from './TagBadges';
+import ApplicationNotes from './ApplicationNotes';
 
 interface JobCardProps {
   application: Application;
@@ -57,23 +60,47 @@ export default function JobCard({ application, onDelete, onEdit }: JobCardProps)
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-1.5 sm:space-y-2 text-sm">
-        {application.location && (
-          <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 gap-1.5">
-            <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-            <span className="line-clamp-1 break-words">{application.location}</span>
-          </div>
-        )}
+      <CardContent className="space-y-2 sm:space-y-3 text-sm">
+        <div className="space-y-1.5">
+          {application.location && (
+            <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 gap-1.5">
+              <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+              <span className="line-clamp-1 break-words">{application.location}</span>
+            </div>
+          )}
 
-        {application.applied_date && (
-          <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 gap-1.5">
-            <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-purple-600 dark:text-purple-400 flex-shrink-0" />
-            <span className="line-clamp-1">Applied: {format(new Date(application.applied_date), 'dd/MM/yy')}</span>
+          {application.applied_date && (
+            <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 gap-1.5">
+              <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-purple-600 dark:text-purple-400 flex-shrink-0" />
+              <span className="line-clamp-1">Applied: {format(new Date(application.applied_date), 'dd/MM/yy', { locale: enGB })}</span>
+            </div>
+          )}
+
+          {application.status === 'INTERVIEWING' && application.interview_date && (
+            <div className="flex items-center text-xs sm:text-sm text-emerald-600 dark:text-emerald-400 gap-1.5 bg-emerald-50 dark:bg-emerald-950 p-1.5 rounded">
+              <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <span className="font-medium">Interview:</span>
+                <span className="ml-1">{format(new Date(application.interview_date), 'dd/MM', { locale: enGB })}</span>
+                {application.interview_time && (
+                  <span className="ml-1 flex items-center gap-0.5">
+                    <Clock className="h-3 w-3" />
+                    {application.interview_time}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {application.tags && application.tags.length > 0 && (
+          <div className="pt-0.5">
+            <TagBadges tags={application.tags} className="mb-1" />
           </div>
         )}
 
         {application.job_url && (
-          <div className="pt-1.5 sm:pt-2 mt-1 sm:mt-1.5 border-t dark:border-slate-700">
+          <div className="pt-1 sm:pt-1.5 border-t dark:border-slate-700">
             <a
               href={application.job_url}
               target="_blank"
@@ -88,7 +115,7 @@ export default function JobCard({ application, onDelete, onEdit }: JobCardProps)
         )}
 
         {application.rejection_reason && (
-          <div className="p-1.5 mt-1.5 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-md">
+          <div className="p-1.5 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-md">
             <div className="flex gap-1.5">
               <AlertCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
               <div className="min-w-0">
@@ -99,8 +126,12 @@ export default function JobCard({ application, onDelete, onEdit }: JobCardProps)
           </div>
         )}
 
+        <div className="border-t dark:border-slate-700 pt-2">
+          <ApplicationNotes applicationId={application.id} />
+        </div>
+
         <div className="text-xs text-gray-400 dark:text-gray-500 pt-1">
-          Added {format(new Date(application.created_at), 'dd/MM/yy')}
+          Added {format(new Date(application.created_at), 'dd/MM/yy', { locale: enGB })}
         </div>
       </CardContent>
     </Card>

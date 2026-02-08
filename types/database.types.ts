@@ -23,6 +23,9 @@ export interface Application {
   location: string | null;
   applied_date: string | null;
   rejection_reason: string | null;
+  interview_date: string | null;
+  interview_time: string | null;
+  tags: string[] | null;
   created_at: string;
   last_updated: string;
 }
@@ -34,6 +37,18 @@ export interface Note {
   created_at: string;
 }
 
+export interface Interview {
+  id: string;
+  application_id: string;
+  interview_date: string;
+  interview_time: string;
+  interview_type: 'phone' | 'video' | 'in-person' | 'other';
+  interviewer: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 // For creating new applications (without auto-generated fields)
 export interface CreateApplicationInput {
   company_name: string;
@@ -43,6 +58,9 @@ export interface CreateApplicationInput {
   location?: string;
   applied_date?: string;
   rejection_reason?: string;
+  interview_date?: string;
+  interview_time?: string;
+  tags?: string[];
 }
 
 // For updating applications
@@ -54,6 +72,9 @@ export interface UpdateApplicationInput {
   location?: string;
   rejection_reason?: string;
   applied_date?: string;
+  interview_date?: string;
+  interview_time?: string;
+  tags?: string[];
 }
 
 // Column configuration for Kanban board

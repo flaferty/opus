@@ -100,9 +100,6 @@ export default function KanbanBoard({ viewMode, setViewMode }: { viewMode: 'kanb
         queryClient.setQueryData(['applications'], context.previousApplications);
       }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['applications'] });
-    },
   });
 
   const deleteApplicationMutation = useMutation({

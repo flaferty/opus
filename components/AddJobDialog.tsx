@@ -25,6 +25,7 @@ interface AddJobDialogProps {
 
 interface FormData extends CreateApplicationInput {
   rejection_reason?: string;
+  tags_input?: string;
 }
 
 export default function AddJobDialog({ open, onOpenChange, editingApplication, initialStatus = 'WISHLIST' }: AddJobDialogProps) {
@@ -36,6 +37,10 @@ export default function AddJobDialog({ open, onOpenChange, editingApplication, i
     location: '',
     applied_date: new Date().toISOString().split('T')[0],
     rejection_reason: '',
+    interview_date: '',
+    interview_time: '',
+    tags: [],
+    tags_input: '',
   });
 
   const queryClient = useQueryClient();
@@ -52,6 +57,10 @@ export default function AddJobDialog({ open, onOpenChange, editingApplication, i
         location: editingApplication.location || '',
         applied_date: editingApplication.applied_date || '',
         rejection_reason: editingApplication.rejection_reason || '',
+        interview_date: editingApplication.interview_date || '',
+        interview_time: editingApplication.interview_time || '',
+        tags: editingApplication.tags || [],
+        tags_input: editingApplication.tags?.join(', ') || '',
       });
     } else if (open && !editingApplication) {
       // New application
@@ -65,22 +74,38 @@ export default function AddJobDialog({ open, onOpenChange, editingApplication, i
       
       if (!user) throw new Error('Not authenticated');
 
+      // Process tags
+      const tags = input.tags_input 
+        ? input.tags_input.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+        : [];
+
+      const dataToSave = {
+        company_name: input.company_name,
+        job_title: input.job_title,
+        status: input.status,
+        job_url: input.job_url || null,
+        location: input.location || null,
+        applied_date: input.applied_date || null,
+        rejection_reason: input.rejection_reason || null,
+        interview_date: input.interview_date || null,
+        interview_time: input.interview_time || null,
+        tags: tags.length > 0 ? tags : null,
+      };
+
       if (editingApplication) {
         // Update existing application
-        const updateData: any = { ...input };
         const { error } = await supabase
           .from('applications')
-          .update(updateData)
+          .update(dataToSave)
           .eq('id', editingApplication.id)
           .eq('user_id', user.id);
 
         if (error) throw error;
       } else {
         // Create new application
-        const { rejection_reason, ...createData } = input;
         const { error } = await supabase.from('applications').insert({
           user_id: user.id,
-          ...createData,
+          ...dataToSave,
         });
 
         if (error) throw error;
@@ -102,6 +127,10 @@ export default function AddJobDialog({ open, onOpenChange, editingApplication, i
       location: '',
       applied_date: new Date().toISOString().split('T')[0],
       rejection_reason: '',
+      interview_date: '',
+      interview_time: '',
+      tags: [],
+      tags_input: '',
     });
   };
 
@@ -184,6 +213,18 @@ export default function AddJobDialog({ open, onOpenChange, editingApplication, i
           </div>
 
           <div className="space-y-1.5 sm:space-y-2">
+            <Label htmlFor="tags" className="text-xs sm:text-sm">Tags (comma-separated)</Label>
+            <Input
+              id="tags"
+              placeholder="e.g., remote, startup, high priority"
+              value={formData.tags_input || ''}
+              onChange={(e) => handleChange('tags_input', e.target.value)}
+              className="text-sm h-9 sm:h-10"
+            />
+            <p className="text-xs text-gray-500">Separate multiple tags with commas</p>
+          </div>
+
+          <div className="space-y-1.5 sm:space-y-2">
             <Label htmlFor="status" className="text-xs sm:text-sm">Status</Label>
             <select
               id="status"
@@ -198,6 +239,32 @@ export default function AddJobDialog({ open, onOpenChange, editingApplication, i
               <option value="REJECTED">Rejected</option>
             </select>
           </div>
+
+          {(formData.status === 'INTERVIEWING' || formData.interview_date) && (
+            <>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="interview_date" className="text-xs sm:text-sm">Interview Date</Label>
+                <Input
+                  id="interview_date"
+                  type="date"
+                  value={formData.interview_date || ''}
+                  onChange={(e) => handleChange('interview_date', e.target.value)}
+                  className="text-sm h-9 sm:h-10"
+                />
+              </div>
+
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="interview_time" className="text-xs sm:text-sm">Interview Time</Label>
+                <Input
+                  id="interview_time"
+                  type="time"
+                  value={formData.interview_time || ''}
+                  onChange={(e) => handleChange('interview_time', e.target.value)}
+                  className="text-sm h-9 sm:h-10"
+                />
+              </div>
+            </>
+          )}
 
           {formData.status === 'REJECTED' && (
             <div className="space-y-1.5 sm:space-y-2">
