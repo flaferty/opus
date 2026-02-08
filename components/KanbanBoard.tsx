@@ -9,9 +9,9 @@ import JobCard from './JobCard';
 import AddJobDialog from './AddJobDialog';
 import { RejectionReasonDialog } from './RejectionReasonDialog';
 import { Button } from './ui/button';
-import { Plus, X, ChevronDown, ChevronRight } from 'lucide-react';
+import { Plus, X, ChevronDown, ChevronRight, LayoutGrid, List } from 'lucide-react';
 
-export default function KanbanBoard() {
+export default function KanbanBoard({ viewMode, setViewMode }: { viewMode: 'kanban' | 'list'; setViewMode: (mode: 'kanban' | 'list') => void }) {
   const [mounted, setMounted] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [rejectionDialogOpen, setRejectionDialogOpen] = useState(false);
@@ -196,6 +196,30 @@ export default function KanbanBoard() {
           <div className="flex items-center justify-between gap-2 sm:gap-3 md:gap-4">
             <div className="flex-1 min-w-0">
               <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white truncate">Track your applications</h1>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                onClick={() => setViewMode('kanban')}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-lg font-medium text-xs sm:text-sm transition-colors ${
+                  viewMode === 'kanban'
+                    ? 'bg-gray-900 text-white dark:bg-gray-700'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
+                }`}
+              >
+                <LayoutGrid size={16} />
+                <span className="hidden sm:inline">Kanban</span>
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-lg font-medium text-xs sm:text-sm transition-colors ${
+                  viewMode === 'list'
+                    ? 'bg-gray-900 text-white dark:bg-gray-700'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600'
+                }`}
+              >
+                <List size={16} />
+                <span className="hidden sm:inline">List</span>
+              </button>
             </div>
             <Button onClick={() => setIsAddDialogOpen(true)} size="sm" className="flex-shrink-0 text-xs sm:text-sm h-8 sm:h-9 md:h-10">
               <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" />

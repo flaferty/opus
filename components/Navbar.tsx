@@ -43,8 +43,7 @@ function NavbarContent() {
               className="flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900"
             >
               <LogOut className="h-4 w-4" />
-              <span className="hidden sm:inline">Logout</span>
-              <span className="sm:hidden">Out</span>
+              <span>Logout</span>
             </Button>
           </div>
         </div>

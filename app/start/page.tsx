@@ -15,7 +15,7 @@ export default function StartPage() {
         <div className="mb-8 sm:mb-12">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-3 sm:mb-4 tracking-tight">
             OPUS
-          </h1>``
+          </h1>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-3 sm:mb-4 tracking-tight">
             Job Application Tracking System
           </h2>
