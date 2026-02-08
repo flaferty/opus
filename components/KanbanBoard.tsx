@@ -159,18 +159,13 @@ export default function KanbanBoard({ viewMode, setViewMode }: { viewMode: 'kanb
 
     const newStatus = destination.droppableId as ApplicationStatus;
 
-    // Defer heavy work to next tick to avoid blocking UI
     if (newStatus === 'REJECTED') {
-      requestAnimationFrame(() => {
-        setPendingRejectionId(draggableId);
-        setRejectionDialogOpen(true);
-      });
+      setPendingRejectionId(draggableId);
+      setRejectionDialogOpen(true);
     } else {
-      requestAnimationFrame(() => {
-        updateStatusMutation.mutate({
-          id: draggableId,
-          status: newStatus,
-        });
+      updateStatusMutation.mutate({
+        id: draggableId,
+        status: newStatus,
       });
     }
   };

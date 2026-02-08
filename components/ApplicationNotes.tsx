@@ -80,11 +80,6 @@ export default function ApplicationNotes({ applicationId }: ApplicationNotesProp
     });
   };
 
-  // Don't render the entire section if there are no notes
-  if (!notes || notes.length === 0) {
-    return null;
-  }
-
   return (
     <div className="space-y-2">
       <button
