@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
@@ -12,7 +12,6 @@ import { Button } from './ui/button';
 import { Plus, X, ChevronDown, ChevronRight, LayoutGrid, List } from 'lucide-react';
 
 export default function KanbanBoard({ viewMode, setViewMode }: { viewMode: 'kanban' | 'list'; setViewMode: (mode: 'kanban' | 'list') => void }) {
-  const [mounted, setMounted] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [rejectionDialogOpen, setRejectionDialogOpen] = useState(false);
   const [pendingRejectionId, setPendingRejectionId] = useState<string | null>(null);
@@ -36,10 +35,6 @@ export default function KanbanBoard({ viewMode, setViewMode }: { viewMode: 'kanb
       return newSet;
     });
   };
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const { data: applications = [], isLoading } = useQuery({
     queryKey: ['applications'],
@@ -159,18 +154,13 @@ export default function KanbanBoard({ viewMode, setViewMode }: { viewMode: 'kanb
 
     const newStatus = destination.droppableId as ApplicationStatus;
 
-    // Defer heavy work to next tick to avoid blocking UI
     if (newStatus === 'REJECTED') {
-      requestAnimationFrame(() => {
-        setPendingRejectionId(draggableId);
-        setRejectionDialogOpen(true);
-      });
+      setPendingRejectionId(draggableId);
+      setRejectionDialogOpen(true);
     } else {
-      requestAnimationFrame(() => {
-        updateStatusMutation.mutate({
-          id: draggableId,
-          status: newStatus,
-        });
+      updateStatusMutation.mutate({
+        id: draggableId,
+        status: newStatus,
       });
     }
   };
@@ -186,10 +176,6 @@ export default function KanbanBoard({ viewMode, setViewMode }: { viewMode: 'kanb
       setRejectionDialogOpen(false);
     }
   };
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
     <div className="flex flex-col overflow-hidden h-screen bg-slate-50 dark:bg-slate-950 transition-colors">

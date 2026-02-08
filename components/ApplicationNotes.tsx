@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import { Note } from '@/types/database.types';
@@ -15,7 +15,7 @@ interface ApplicationNotesProps {
 export default function ApplicationNotes({ applicationId }: ApplicationNotesProps) {
   const [noteContent, setNoteContent] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const queryClient = useQueryClient();
 
   // Fetch notes for this application
@@ -80,7 +80,7 @@ export default function ApplicationNotes({ applicationId }: ApplicationNotesProp
     });
   };
 
-  // Don't render the entire section if there are no notes
+  // Render nothing if no notes
   if (!notes || notes.length === 0) {
     return null;
   }

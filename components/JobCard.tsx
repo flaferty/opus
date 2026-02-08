@@ -7,7 +7,6 @@ import { ExternalLink, X, MapPin, Calendar, AlertCircle, Clock } from 'lucide-re
 import { format } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import TagBadges from './TagBadges';
-import ApplicationNotes from './ApplicationNotes';
 
 interface JobCardProps {
   application: Application;
@@ -126,9 +125,10 @@ export default function JobCard({ application, onDelete, onEdit }: JobCardProps)
           </div>
         )}
 
-        <div className="border-t dark:border-slate-700 pt-2">
+        {/* Temporarily disabled - debugging error #310 */}
+        {/* <div className="border-t dark:border-slate-700 pt-2">
           <ApplicationNotes applicationId={application.id} />
-        </div>
+        </div> */}
 
         <div className="text-xs text-gray-400 dark:text-gray-500 pt-1">
           Added {format(new Date(application.created_at), 'dd/MM/yy', { locale: enGB })}

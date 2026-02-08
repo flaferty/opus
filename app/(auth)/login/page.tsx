@@ -56,16 +56,16 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-3 sm:p-4 transition-colors">
+    <main className="min-h-screen flex items-center justify-center bg-slate-950 p-3 sm:p-4">
       <div className="absolute top-4 sm:top-6 left-4 sm:left-6 z-20">
         <Logo />
       </div>
-      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
+      <Card className="w-full max-w-md bg-slate-800 border-slate-700 relative z-10">
         <CardHeader className="space-y-1 p-4 sm:p-6">
-          <CardTitle className="text-xl sm:text-2xl font-bold text-center dark:text-white">
+          <CardTitle className="text-xl sm:text-2xl font-bold text-center text-white">
             {isSignUp ? 'Create account' : 'Welcome back'}
           </CardTitle>
-          <CardDescription className="text-center text-xs sm:text-sm dark:text-gray-400">
+          <CardDescription className="text-center text-xs sm:text-sm text-gray-400">
             {isSignUp
               ? 'Enter your email to create account'
               : 'Enter your credentials'}
@@ -74,7 +74,7 @@ export default function LoginPage() {
         <CardContent className="p-4 sm:p-6">
           <form onSubmit={handleAuth} className="space-y-3 sm:space-y-4">
             <div className="space-y-1.5 sm:space-y-2">
-              <Label htmlFor="email" className="text-xs sm:text-sm dark:text-gray-300">Email</Label>
+              <Label htmlFor="email" className="text-xs sm:text-sm text-gray-300">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -83,14 +83,14 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
-                className="text-sm h-9 sm:h-10 dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:placeholder-gray-500"
+                className="text-sm h-9 sm:h-10 bg-slate-700 border-slate-600 text-white placeholder-slate-400"
               />
             </div>
             <div className="space-y-1.5 sm:space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-xs sm:text-sm dark:text-gray-300">Password</Label>
+                <Label htmlFor="password" className="text-xs sm:text-sm text-gray-300">Password</Label>
                 {!isSignUp && (
-                  <Link href="/forgot-password" className="text-xs text-blue-600 dark:text-blue-400 hover:underline">
+                  <Link href="/forgot-password" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
                     Forgot?
                   </Link>
                 )}
@@ -104,12 +104,12 @@ export default function LoginPage() {
                 required
                 disabled={isLoading}
                 minLength={6}
-                className="text-sm h-9 sm:h-10 dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:placeholder-gray-500"
+                className="text-sm h-9 sm:h-10 bg-slate-700 border-slate-600 text-white placeholder-slate-400"
               />
             </div>
 
             {error && (
-              <div className="p-2.5 sm:p-3 text-xs sm:text-sm text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-md">
+              <div className="p-2.5 sm:p-3 text-xs sm:text-sm text-red-400 bg-slate-900 border border-red-800 rounded-md">
                 {error}
               </div>
             )}
@@ -126,7 +126,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="text-blue-600 dark:text-blue-400 hover:underline"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
                 disabled={isLoading}
               >
                 {isSignUp
