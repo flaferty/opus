@@ -16,12 +16,14 @@ export default function DashboardPage() {
       <Navbar />
       
       {/* Content */}
-      <div className={viewMode === 'kanban' ? 'block' : 'hidden'}>
-        <KanbanBoard viewMode={viewMode} setViewMode={setViewMode} />
-      </div>
-      <div className={viewMode === 'list' ? 'block' : 'hidden'}>
-        <ApplicationsList viewMode={viewMode} setViewMode={setViewMode} />
-      </div>
+      <main className="flex-1">
+        <div className={viewMode === 'kanban' ? 'block' : 'hidden'}>
+          <KanbanBoard viewMode={viewMode} setViewMode={setViewMode} />
+        </div>
+        <div className={viewMode === 'list' ? 'block' : 'hidden'}>
+          <ApplicationsList viewMode={viewMode} setViewMode={setViewMode} />
+        </div>
+      </main>
     </div>
   );
 }
