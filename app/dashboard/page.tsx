@@ -1,37 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import KanbanBoard from '@/components/KanbanBoard';
+import ApplicationsList from '@/components/ApplicationsList';
 import Navbar from '@/components/Navbar';
 
+type ViewMode = 'kanban' | 'list';
+
 export default function DashboardPage() {
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const supabase = createClient();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push('/login');
-      } else {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, [supabase, router]);
-
-  if (loading) {
-    return null;
-  }
+  const [viewMode, setViewMode] = useState<ViewMode>('kanban');
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <Navbar />
-      <KanbanBoard />
+      
+      {/* Content */}
+      <div className={viewMode === 'kanban' ? 'block' : 'hidden'}>
+        <KanbanBoard viewMode={viewMode} setViewMode={setViewMode} />
+      </div>
+      <div className={viewMode === 'list' ? 'block' : 'hidden'}>
+        <ApplicationsList viewMode={viewMode} setViewMode={setViewMode} />
+      </div>
     </div>
   );
 }
