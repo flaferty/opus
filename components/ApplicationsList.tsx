@@ -11,7 +11,6 @@ type SortKey = keyof Application;
 type SortOrder = 'asc' | 'desc';
 
 export default function ApplicationsList({ viewMode, setViewMode }: { viewMode: 'kanban' | 'list'; setViewMode: (mode: 'kanban' | 'list') => void }) {
-  const [mounted, setMounted] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>('created_at');
   const [tableSortOrder, setTableSortOrder] = useState<SortOrder>('desc');
   const [sortByDate, setSortByDate] = useState<'newest' | 'oldest'>('newest');
