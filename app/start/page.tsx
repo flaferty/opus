@@ -4,7 +4,7 @@ import Logo from '@/components/Logo';
 
 export default function StartPage() {
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4 sm:p-6 relative">
+    <main className="min-h-screen bg-black flex flex-col items-center justify-center p-4 sm:p-6 relative">
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-gray-900 to-transparent pointer-events-none" />
       
       <div className="absolute top-4 sm:top-6 left-4 sm:left-6 z-20">
@@ -63,6 +63,6 @@ export default function StartPage() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

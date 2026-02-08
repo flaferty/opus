@@ -80,7 +80,8 @@ export default function ApplicationNotes({ applicationId }: ApplicationNotesProp
     });
   };
 
-  if (notes.length === 0) {
+  // Don't render the entire section if there are no notes
+  if (!notes || notes.length === 0) {
     return null;
   }
 
@@ -129,32 +130,28 @@ export default function ApplicationNotes({ applicationId }: ApplicationNotesProp
 
           {/* Notes List */}
           <div className="space-y-2 max-h-60 overflow-y-auto">
-            {notes.length === 0 ? (
-              <p className="text-xs text-gray-500 dark:text-gray-400 italic">No notes yet</p>
-            ) : (
-              notes.map((note) => (
-                <div
-                  key={note.id}
-                  className="p-2 bg-white dark:bg-slate-700 rounded border border-gray-200 dark:border-slate-600 space-y-1"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
-                      {formatDate(note.created_at)}
-                    </p>
-                    <button
-                      onClick={() => deleteNoteMutation.mutate(note.id)}
-                      disabled={deleteNoteMutation.isPending}
-                      className="text-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors p-1"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                  <p className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
-                    {note.content}
+            {notes.map((note) => (
+              <div
+                key={note.id}
+                className="p-2 bg-white dark:bg-slate-700 rounded border border-gray-200 dark:border-slate-600 space-y-1"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    {formatDate(note.created_at)}
                   </p>
+                  <button
+                    onClick={() => deleteNoteMutation.mutate(note.id)}
+                    disabled={deleteNoteMutation.isPending}
+                    className="text-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors p-1"
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
-              ))
-            )}
+                <p className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
+                  {note.content}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       )}
