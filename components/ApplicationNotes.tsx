@@ -80,7 +80,9 @@ export default function ApplicationNotes({ applicationId }: ApplicationNotesProp
     });
   };
 
-  return (
+  return !notes || notes.length === 0 ? (
+    <></>
+  ) : (
     <div className="space-y-2">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
