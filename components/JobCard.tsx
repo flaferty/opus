@@ -42,11 +42,11 @@ export default function JobCard({ application, onDelete, onEdit }: JobCardProps)
       <CardHeader className="pb-2 sm:pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
-            <CardTitle className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white line-clamp-2">
-              {application.company_name}
+            <CardTitle className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white line-clamp-3">
+              {application.job_title}
             </CardTitle>
             <CardDescription className="mt-0.5 text-xs dark:text-gray-400 line-clamp-1">
-              {application.job_title}
+              {application.company_name}
             </CardDescription>
           </div>
           <Button
