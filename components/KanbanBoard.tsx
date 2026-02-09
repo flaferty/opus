@@ -318,7 +318,7 @@ export default function KanbanBoard({ viewMode, setViewMode }: { viewMode: 'kanb
                             setInitialStatus(column.id);
                             setIsAddDialogOpen(true);
                           }}
-                          className={`flex-1 p-1.5 sm:p-2 rounded-b-lg min-h-[200px] md:min-h-[400px] lg:min-h-[500px] transition-colors cursor-pointer group ${
+                          className={`flex-1 p-1.5 sm:p-2 rounded-b-lg max-h-[calc(100vh-300px)] md:max-h-[calc(100vh-250px)] overflow-y-auto transition-colors cursor-pointer group ${
                             snapshot.isDraggingOver ? 'bg-blue-50 dark:bg-slate-800' : 'bg-white dark:bg-slate-800'
                           }`}
                         >
