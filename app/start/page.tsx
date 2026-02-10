@@ -1,8 +1,17 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/Logo';
 
-export default function StartPage() {
+export default async function StartPage() {
+  const supabase = await createServerSupabaseClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (user) {
+    redirect('/dashboard');
+  }
+
   return (
     <main className="min-h-screen bg-black flex flex-col items-center justify-center p-4 sm:p-6 relative">
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-gray-900 to-transparent pointer-events-none" />
@@ -31,7 +40,7 @@ export default function StartPage() {
               Sign In
             </Button>
           </Link>
-          <Link href="/login">
+          <Link href="/login?signup=true">
             <Button 
               className="h-8 sm:h-9 px-6 sm:px-8 text-xs sm:text-sm font-medium bg-gray-800 text-white hover:bg-gray-700 transition-colors border border-gray-600"
             >
